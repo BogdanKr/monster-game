@@ -10,7 +10,7 @@ import java.util.Random;
 public class Move {
     private Object action;
     private final ConsoleReader console;
-    private BattleField player;
+    private BattleField field;
     private Monster[] monster;
 
     public Move(KeyMap map, ConsoleReader console) throws IOException {
@@ -18,8 +18,8 @@ public class Move {
         action = console.readBinding(map);
     }
 
-    public void setPlayer(BattleField player) {
-        this.player = player;
+    public void setPlayer(BattleField field) {
+        this.field = field;
     }
 
     public void playerAction() {
@@ -27,63 +27,63 @@ public class Move {
         if (action.equals("Right")) moveRight();
         if (action.equals("Up")) moveUp();
         if (action.equals("Down")) moveDown();
-
+        field.setNeedField(field.getPlayerX(),field.getPlayerY(), 'X');
     }
 
     public void moveLeft() {
-        int i = player.getPlayerX();
-        int j = player.getPlayerY();
+        int i = field.getPlayerX();
+        int j = field.getPlayerY();
         if (j > 0) {
-            if (i == player.getFieldHeight() - 1) {
+            if (i == field.getFieldHeight() - 1) {
                 j--;
-                player.setPlayerY(j);
-                player.setNeedField(i, j + 1, '_');
+                field.setPlayerY(j);
+                field.setNeedField(i, j + 1, '_');
             } else {
                 j--;
-                player.setPlayerY(j);
-                player.setNeedField(i, j + 1, ' ');
+                field.setPlayerY(j);
+                field.setNeedField(i, j + 1, ' ');
             }
         }
     }
 
     public void moveRight() {
-        int i = player.getPlayerX();
-        int j = player.getPlayerY();
-        if (j < player.getFieldWidth() - 1) {
-            if (i == player.getFieldHeight() - 1) {
+        int i = field.getPlayerX();
+        int j = field.getPlayerY();
+        if (j < field.getFieldWidth() - 1) {
+            if (i == field.getFieldHeight() - 1) {
                 j++;
-                player.setPlayerY(j);
-                player.setNeedField(i, j - 1, '_');
+                field.setPlayerY(j);
+                field.setNeedField(i, j - 1, '_');
             } else {
                 j++;
-                player.setPlayerY(j);
-                player.setNeedField(i, j - 1, ' ');
+                field.setPlayerY(j);
+                field.setNeedField(i, j - 1, ' ');
             }
         }
     }
 
     public void moveDown() {
-        int i = player.getPlayerX();
-        int j = player.getPlayerY();
-        if (i < player.getFieldHeight() - 1) {
+        int i = field.getPlayerX();
+        int j = field.getPlayerY();
+        if (i < field.getFieldHeight() - 1) {
             i++;
-            player.setPlayerX(i);
-            player.setNeedField(i - 1, j, ' ');
+            field.setPlayerX(i);
+            field.setNeedField(i - 1, j, ' ');
         }
     }
 
     public void moveUp() {
-        int i = player.getPlayerX();
-        int j = player.getPlayerY();
+        int i = field.getPlayerX();
+        int j = field.getPlayerY();
         if (i > 0) {
-            if (i == player.getFieldHeight() - 1) {
+            if (i == field.getFieldHeight() - 1) {
                 i--;
-                player.setPlayerX(i);
-                player.setNeedField(i + 1, j, '_');
+                field.setPlayerX(i);
+                field.setNeedField(i + 1, j, '_');
             } else {
                 i--;
-                player.setPlayerX(i);
-                player.setNeedField(i + 1, j, ' ');
+                field.setPlayerX(i);
+                field.setNeedField(i + 1, j, ' ');
             }
         }
     }
@@ -94,19 +94,20 @@ public class Move {
         for (int i = 0; i < monster.length; i++) {
             int x = monster[i].getMonsterX();
             int y = monster[i].getMonsterY();
-            player.setNeedField(x, y, ' ');
-            if (x > 0 && x < player.getFieldHeight() - 1)
+            
+            field.setNeedField(x, y, ' ');
+            if (x > 0 && x < field.getFieldHeight() - 1)
                 x = x + random.nextInt(3) - 1;
             else if (x == 0) x = x + random.nextInt(2);
             else x = x - random.nextInt(2);
-            if (y > 0 && y < player.getFieldWidth() - 1)
+            if (y > 0 && y < field.getFieldWidth() - 1)
                 y = y + random.nextInt(3) - 1;
             else if (y == 0) y = y + random.nextInt(2);
             else y = y - random.nextInt(2);
 
             monster[i].setMonsterX(x);
             monster[i].setMonsterY(y);
-            player.setNeedField(x, y, 'M');
+            field.setNeedField(x, y, 'M');
         }
     }
 }

@@ -3,7 +3,6 @@ package com.game;
 import jline.console.ConsoleReader;
 
 import java.util.Arrays;
-import java.util.Random;
 import java.io.IOException;
 
 
@@ -39,8 +38,8 @@ public class BattleField {
     }
 
     public void viewBattleField() throws IOException {
+        consol.clearScreen();
         consol.println("GoGoGoooo");
-        field[playerX][playerY] = 'X';
         for (int i = 0; i < getFieldHeight(); i++) {
             consol.println(Arrays.toString(field[i]));
             consol.flush();
@@ -55,14 +54,6 @@ public class BattleField {
         return playerY;
     }
 
-    public char[][] getField() {
-        return field;
-    }
-
-    public void setField(char[][] field) {
-        this.field = field;
-    }
-
     public void setPlayerX(int playerX) {
         this.playerX = playerX;
     }
@@ -75,7 +66,15 @@ public class BattleField {
         field[x][y] = c;
     }
 
-    public void setMonster(Monster[] monster) {
+
+    public boolean checkAlive(Monster[] monster) {
         this.monster = monster;
+        for (int i = 0; i < monster.length; i++) {
+            if (monster[i].getMonsterX() == playerX && monster[i].getMonsterY() == playerY) {
+                setNeedField(playerX,playerY,'D');
+                return false;
+            }
+        }
+        return true;
     }
 }
