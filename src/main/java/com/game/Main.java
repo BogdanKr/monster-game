@@ -34,13 +34,10 @@ public class Main {
             move.playerAction();             //перемещаем клавишами игрока
             move.moveMonster(monster);      //перемещаем монстров
 
-
-            consoleReader.clearScreen();
             field.viewBattleField();
 
             //проверям не наткнулись ли монстры на человека
             if (!field.checkAlive(monster)) {
-                consoleReader.clearScreen();
                 field.viewBattleField();
                 consoleReader.println("GAME OVER - monsters killed you");
                 consoleReader.flush();

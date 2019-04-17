@@ -27,7 +27,7 @@ public class Move {
         if (action.equals("Right")) moveRight();
         if (action.equals("Up")) moveUp();
         if (action.equals("Down")) moveDown();
-        field.setNeedField(field.getPlayerX(),field.getPlayerY(), 'X');
+        field.setNeedField(field.getPlayerX(), field.getPlayerY(), 'X');
     }
 
     public void moveLeft() {
@@ -94,8 +94,8 @@ public class Move {
         for (int i = 0; i < monster.length; i++) {
             int x = monster[i].getMonsterX();
             int y = monster[i].getMonsterY();
-            
-            field.setNeedField(x, y, ' ');
+            if (field.fieldChar(x, y) != 'X')
+                field.setNeedField(x, y, ' ');
             if (x > 0 && x < field.getFieldHeight() - 1)
                 x = x + random.nextInt(3) - 1;
             else if (x == 0) x = x + random.nextInt(2);

@@ -65,7 +65,9 @@ public class BattleField {
     public void setNeedField(int x, int y, char c) {
         field[x][y] = c;
     }
-
+    public char fieldChar(int x, int y){
+        return field[x][y];
+    }
 
     public boolean checkAlive(Monster[] monster) {
         this.monster = monster;
