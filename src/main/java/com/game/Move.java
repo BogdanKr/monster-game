@@ -96,18 +96,28 @@ public class Move {
             int y = monster[i].getMonsterY();
             if (field.fieldChar(x, y) != 'X')
                 field.setNeedField(x, y, ' ');
-            if (x > 0 && x < field.getFieldHeight() - 1)
-                x = x + random.nextInt(3) - 1;
-            else if (x == 0) x = x + random.nextInt(2);
-            else x = x - random.nextInt(2);
-            if (y > 0 && y < field.getFieldWidth() - 1)
-                y = y + random.nextInt(3) - 1;
-            else if (y == 0) y = y + random.nextInt(2);
-            else y = y - random.nextInt(2);
 
-            monster[i].setMonsterX(x);
-            monster[i].setMonsterY(y);
-            field.setNeedField(x, y, 'M');
+            int a,b;
+            if (x > 0 && x < field.getFieldHeight() - 1)
+                a = x + random.nextInt(3) - 1;
+            else if (x == 0) a = x + random.nextInt(2);
+            else a = x - random.nextInt(2);
+            if (y > 0 && y < field.getFieldWidth() - 1)
+                b = y + random.nextInt(3) - 1;
+            else if (y == 0) b = y + random.nextInt(2);
+            else b = y - random.nextInt(2);
+
+            if (field.fieldChar(a, b) == ' ' || field.fieldChar(a, b) == 'X') {
+                monster[i].setMonsterX(a);
+                monster[i].setMonsterY(b);
+                field.setNeedField(a, b, 'M');
+            }
+            else {
+                monster[i].setMonsterX(x);
+                monster[i].setMonsterY(y);
+                field.setNeedField(x, y, 'M');
+            }
+
         }
     }
 }

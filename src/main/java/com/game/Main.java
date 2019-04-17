@@ -14,7 +14,7 @@ public class Main {
 
         // создаю поле 13 / 6 и заполняю его пробелами, снизу поле подчеркнуто и по центру Х
         BattleField field = new BattleField(13, 6, consoleReader);
-        Monster[] monster = new Monster[3]; //создаю 3 монстра
+        Monster[] monster = new Monster[10]; //создаю 3 монстра
         for (int i = 0; i < monster.length; i++) {
             monster[i] = new Monster(field);
         }
