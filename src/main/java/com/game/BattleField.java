@@ -11,7 +11,6 @@ public class BattleField {
     private final ConsoleReader consol;
     private int playerX;
     private int playerY;
-    private Monster[] monster;
 
     public BattleField(int x, int y, ConsoleReader consol) {
         field = new char[x][y];
@@ -65,18 +64,10 @@ public class BattleField {
     public void setNeedField(int x, int y, char c) {
         field[x][y] = c;
     }
+
     public char fieldChar(int x, int y){
         return field[x][y];
     }
 
-    public boolean checkAlive(Monster[] monster) {
-        this.monster = monster;
-        for (int i = 0; i < monster.length; i++) {
-            if (monster[i].getMonsterX() == playerX && monster[i].getMonsterY() == playerY) {
-                setNeedField(playerX,playerY,'D');
-                return false;
-            }
-        }
-        return true;
-    }
+
 }

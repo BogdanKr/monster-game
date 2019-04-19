@@ -32,5 +32,13 @@ public class Monster {
         this.monsterY = monsterY;
     }
 
+    public boolean checkAlive(BattleField field) {
+        this.field = field;
+            if (monsterX == field.getPlayerX() && monsterY == field.getPlayerY()) {
+                field.setNeedField(monsterX, monsterY, 'D');
+                return false;
+            }
+        return true;
+    }
 
 }

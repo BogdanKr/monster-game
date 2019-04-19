@@ -37,11 +37,14 @@ public class Main {
             field.viewBattleField();
 
             //проверям не наткнулись ли монстры на человека
-            if (!field.checkAlive(monster)) {
-                field.viewBattleField();
-                consoleReader.println("GAME OVER - monsters killed you");
-                consoleReader.flush();
-                break;
+            for (int i = 0; i < monster.length; i++) {
+
+                if (!monster[i].checkAlive(field)) {
+                    field.viewBattleField();
+                    consoleReader.println("GAME OVER - monsters killed you");
+                    consoleReader.flush();
+                    break;
+                }
             }
         }
 
