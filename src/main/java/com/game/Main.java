@@ -1,7 +1,6 @@
 package com.game;
 
 import jline.console.ConsoleReader;
-import jline.console.KeyMap;
 
 import java.io.IOException;
 
@@ -9,44 +8,16 @@ import java.io.IOException;
 public class Main {
     public static void main(String[] args) throws IOException {
 
-        ConsoleReader consoleReader = new ConsoleReader();
-        consoleReader.clearScreen();
+        ConsoleReader console = new ConsoleReader();
+        console.clearScreen();
 
-        // создаю поле 13 / 6 и заполняю его пробелами, снизу поле подчеркнуто и по центру Х
-        BattleField field = new BattleField(13, 6, consoleReader);
-        Monster[] monster = new Monster[10]; //создаю 3 монстра
-        for (int i = 0; i < monster.length; i++) {
-            monster[i] = new Monster(field);
-        }
+        // создаю поле 13 / 6 и заполняю его пробелами, снизу поле подчеркнуто и по центру герой
+        BattleField field = new BattleField(13, 6, console);
+        Monster[] monster = new Monster[10]; //создаю монстров и их количество
+        Hero superman = new Hero(field);
 
-        //Вывожу поле до нажатия кнопки
-        field.viewBattleField();
-
-        while (true) {
-            KeyMap map = new KeyMap("");
-            map.bind("\u001B[A", "Up");
-            map.bind("\u001B[B", "Down");
-            map.bind("\u001B[C", "Right");
-            map.bind("\u001B[D", "Left");
-
-            Move move = new Move(map, consoleReader);
-            move.setPlayer(field);
-            move.playerAction();             //перемещаем клавишами игрока
-            move.moveMonster(monster);      //перемещаем монстров
-
-            field.viewBattleField();
-
-            //проверям не наткнулись ли монстры на человека
-            for (int i = 0; i < monster.length; i++) {
-
-                if (!monster[i].checkAlive(field)) {
-                    field.viewBattleField();
-                    consoleReader.println("GAME OVER - monsters killed you");
-                    consoleReader.flush();
-                    break;
-                }
-            }
-        }
+        SimpleEngine simpleEngine = new SimpleEngine(field, monster, console, superman);
+        simpleEngine.runGame();
 
     }
 }

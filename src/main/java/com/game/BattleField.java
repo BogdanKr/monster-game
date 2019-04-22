@@ -9,8 +9,6 @@ import java.io.IOException;
 public class BattleField {
     private char[][] field;
     private final ConsoleReader consol;
-    private int playerX;
-    private int playerY;
 
     public BattleField(int x, int y, ConsoleReader consol) {
         field = new char[x][y];
@@ -23,9 +21,6 @@ public class BattleField {
         for (int i = 0; i < y; i++) {
             field[x - 1][i] = '_';
         }
-        playerX = x - 1;
-        playerY = y / 2 - 1;
-        field[playerX][playerY] = 'X';
     }
 
     public int getFieldWidth() {
@@ -43,22 +38,6 @@ public class BattleField {
             consol.println(Arrays.toString(field[i]));
             consol.flush();
         }
-    }
-
-    public int getPlayerX() {
-        return playerX;
-    }
-
-    public int getPlayerY() {
-        return playerY;
-    }
-
-    public void setPlayerX(int playerX) {
-        this.playerX = playerX;
-    }
-
-    public void setPlayerY(int playerY) {
-        this.playerY = playerY;
     }
 
     public void setNeedField(int x, int y, char c) {

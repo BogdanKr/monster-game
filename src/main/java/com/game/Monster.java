@@ -20,25 +20,40 @@ public class Monster {
         return monsterX;
     }
 
-    public void setMonsterX(int monsterX) {
-        this.monsterX = monsterX;
-    }
-
     public int getMonsterY() {
         return monsterY;
     }
 
-    public void setMonsterY(int monsterY) {
-        this.monsterY = monsterY;
-    }
 
-    public boolean checkAlive(BattleField field) {
-        this.field = field;
-            if (monsterX == field.getPlayerX() && monsterY == field.getPlayerY()) {
-                field.setNeedField(monsterX, monsterY, 'D');
-                return false;
-            }
-        return true;
-    }
+    public void moveMonster() {
+        Random random = new Random();
+        int x = monsterX;
+        int y = monsterY;
+        if (field.fieldChar(x, y) != 'X')
+            field.setNeedField(x, y, ' ');
 
+        int a = x, b = y, c;
+        c = random.nextInt(10);
+        if (c % 2 == 0) {
+            if (x > 0 && x < field.getFieldHeight() - 1)
+                a = x + random.nextInt(3) - 1;
+            else if (x == 0) a = x + random.nextInt(2);
+            else a = x - random.nextInt(2);
+        } else {
+            if (y > 0 && y < field.getFieldWidth() - 1)
+                b = y + random.nextInt(3) - 1;
+            else if (y == 0) b = y + random.nextInt(2);
+            else b = y - random.nextInt(2);
+        }
+
+        if (field.fieldChar(a, b) == ' ' || field.fieldChar(a, b) == 'X') {
+            monsterX = a;
+            monsterY = b;
+            field.setNeedField(a, b, 'M');
+        } else {
+            field.setNeedField(x, y, 'M');
+        }
+
+    }
 }
+
