@@ -3,28 +3,44 @@ package com.game;
 public class Pistol {
     private int pistolX;
     private int pistolY;
-    private static int count;
-    private Hero hero;
+    private int count;
     private BattleField field;
 
-    public Pistol(Hero hero, BattleField field) {
-        this.hero = hero;
+    public Pistol(BattleField field) {
         this.field = field;
+        pistolX = field.getFieldHeight() - 1;
+        pistolY = field.getFieldWidth() - 1;
     }
 
-    public void shotPistol() {
-        if (count == 0) {
-            field.setNeedField(pistolX,pistolY,' ');
-            pistolX = hero.getPlayerX() - 1;
-            pistolY = hero.getPlayerY();
+    public void shotPistol(int x, int y) {
+        if (x > 0) {
+            pistolX = x - 1;
+            pistolY = y;
             count++;
-            field.setNeedField(pistolX,pistolY,'*');
+            field.setNeedField(pistolX, pistolY, '*');
         }
-        else{
+    }
+
+    public void shooting() {
+        if (pistolX != 0) {
+            field.setNeedField(pistolX, pistolY, ' ');
             pistolX--;
-            field.setNeedField(pistolX,pistolY,'*');
-
+            field.setNeedField(pistolX, pistolY, '*');
         }
 
+    }
+
+    public void pistolHit(int x, int y) {
+        count = 0;
+        pistolX = x;
+        pistolY = y;
+    }
+
+    public int getPistolX() {
+        return pistolX;
+    }
+
+    public int getPistolY() {
+        return pistolY;
     }
 }

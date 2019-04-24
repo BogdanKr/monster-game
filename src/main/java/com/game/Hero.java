@@ -25,6 +25,7 @@ public class Hero {
         if (action.equals("Right")) moveRight();
         if (action.equals("Up")) moveUp();
         if (action.equals("Down")) moveDown();
+
         field.setNeedField(playerX, playerY, 'X');
     }
 

@@ -23,10 +23,11 @@ public class SimpleEngine {
         for (int i = 0; i < monster.length; i++) {
             monster[i] = new Monster(field);
         }
-        pistol = new Pistol(hero,field);
+        pistol = new Pistol(field);
         console.clearScreen();
         console.println(field.viewBattleField());
         console.flush();
+        int shot = 0;
 
         while (checkAlive()) {
             KeyMap map = new KeyMap("");
@@ -37,16 +38,40 @@ public class SimpleEngine {
             map.bind(" ", "Shot");
             Object action = console.readBinding(map);
             hero.playerAction(action);
-            if (action.equals("Shot")) pistol.shotPistol();
 
             //перемещае монстров
             for (int i = 0; i < monster.length; i++) {
                 monster[i].moveMonster();
             }
 
+            if (shot > 0) pistol.shooting();//полет пули если был выстрел
+
+            //новый выстрел если небыло предыдущего
+            if (action.equals("Shot")) {
+                if (shot == 0) {
+                    pistol.shotPistol(hero.getPlayerX(), hero.getPlayerY());
+                    shot++;
+                }
+            }
+
+            //проверяю попала ли пуля в монстра если да удаляю его
+            for (int i = 0; i < monster.length; i++) {
+                if (monster[i].getMonsterX() == pistol.getPistolX() && monster[i].getMonsterY() == pistol.getPistolY()) {
+                    monsterDied(i);
+                    field.setNeedField(pistol.getPistolX(), pistol.getPistolY(), ' ');
+                    shot = 0;
+                    pistol.pistolHit(hero.getPlayerX(), hero.getPlayerY());
+                }
+            }
+
             console.clearScreen();
             console.println(field.viewBattleField());
             console.flush();
+
+            if (pistol.getPistolX() == 0) {
+                shot = 0;//если пуля долетела до конца поля, полет прекращается
+                field.setNeedField(pistol.getPistolX(),pistol.getPistolY(),' ');
+            }
         }
 
     }
@@ -64,6 +89,18 @@ public class SimpleEngine {
                 return false;
             }
         }
+
         return true;
+    }
+
+    public void monsterDied(int x) {
+        Monster[] monsterNew = new Monster[monster.length - 1];
+        for (int i = 0; i < x; i++) {
+            monsterNew[i] = monster[i];
+        }
+        for (int i = x + 1; i < monster.length; i++) {
+            monsterNew[i - 1] = monster[i];
+        }
+        monster = monsterNew;
     }
 }

@@ -1,10 +1,5 @@
 package com.game;
 
-//import jline.console.ConsoleReader;
-
-import java.util.Arrays;
-import java.io.IOException;
-
 
 public class BattleField {
     private char[][] field;
@@ -36,7 +31,8 @@ public class BattleField {
                 if (j < getFieldWidth() - 1) str = str + field[i][j] + ".";
                 else str = str + field[i][j];
             }
-            str = str + "]\n[";
+            if (i < getFieldHeight() - 1) str = str + "]\n[";
+            else str = str + "]\n";
         }
         return str;
     }
