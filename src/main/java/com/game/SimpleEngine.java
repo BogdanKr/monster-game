@@ -8,13 +8,15 @@ import java.io.IOException;
 public class SimpleEngine {
     private BattleField field;
     private Monster[] monster;
+    private BigMonster[] bigMonster;
     private ConsoleReader console;
     private Hero hero;
     private Pistol pistol;
 
-    public SimpleEngine(BattleField field, Monster[] monster, ConsoleReader console, Hero hero) {
+    public SimpleEngine(BattleField field, Monster[] monster, BigMonster[] bigMonster, ConsoleReader console, Hero hero) {
         this.field = field;
         this.monster = monster;
+        this.bigMonster = bigMonster;
         this.console = console;
         this.hero = hero;
     }
@@ -22,6 +24,9 @@ public class SimpleEngine {
     public void runGame() throws IOException {
         for (int i = 0; i < monster.length; i++) {
             monster[i] = new Monster(field);
+        }
+        for (int i = 0; i < bigMonster.length; i++) {
+            bigMonster[i] = new BigMonster(field);
         }
         pistol = new Pistol(field);
         console.clearScreen();
@@ -43,6 +48,9 @@ public class SimpleEngine {
             for (int i = 0; i < monster.length; i++) {
                 monster[i].moveMonster();
             }
+            for (int i = 0; i < bigMonster.length; i++) {
+                bigMonster[i].moveBigMonster();
+            }
 
             if (shot > 0) pistol.shooting();//полет пули если был выстрел
 
@@ -56,11 +64,29 @@ public class SimpleEngine {
 
             //проверяю попала ли пуля в монстра если да удаляю его
             for (int i = 0; i < monster.length; i++) {
-                if (monster[i].getMonsterX() == pistol.getPistolX() && monster[i].getMonsterY() == pistol.getPistolY()) {
+                if (monster[i].getMonsterX() == pistol.getPistolX() &&
+                        monster[i].getMonsterY() == pistol.getPistolY()) {
                     monsterDied(i);
                     field.setNeedField(pistol.getPistolX(), pistol.getPistolY(), 'T');
                     shot = 0;
                     pistol.pistolHit(hero.getPlayerX(), hero.getPlayerY());
+                }
+            }
+            for (int i = 0; i < bigMonster.length; i++) {
+                if (bigMonster[i].getBigMonsterX() == pistol.getPistolX() &&
+                        bigMonster[i].getBigMonsterY() == pistol.getPistolY()) {
+                    if (bigMonster[i].getView() == 'B') {
+                        bigMonster[i].setView('b');
+                        field.setNeedField(pistol.getPistolX(), pistol.getPistolY(), 'b');
+
+                        shot = 0;
+                        pistol.pistolHit(hero.getPlayerX(), hero.getPlayerY());
+                    } else {
+                        bigMonsterDied(i);
+                        field.setNeedField(pistol.getPistolX(), pistol.getPistolY(), 'T');
+                        shot = 0;
+                        pistol.pistolHit(hero.getPlayerX(), hero.getPlayerY());
+                    }
                 }
             }
 
@@ -73,23 +99,22 @@ public class SimpleEngine {
                 field.setNeedField(pistol.getPistolX(), pistol.getPistolY(), ' ');
             }
         }
-
     }
 
     public boolean checkAlive() throws IOException {
         for (int i = 0; i < monster.length; i++) {
 
-            if (monster[i].getMonsterX() == hero.getPlayerX() && monster[i].getMonsterY() == hero.getPlayerY()) {
-                field.setNeedField(hero.getPlayerX(), hero.getPlayerY(), 'D');
-                console.clearScreen();
-                console.println(field.viewBattleField());
-                console.flush();
-                console.println("GAME OVER - monsters killed you");
-                console.flush();
-                return false;
-            }
+            if (monster[i].getMonsterX() == hero.getPlayerX() &&
+                    monster[i].getMonsterY() == hero.getPlayerY())
+                return gameOver();
         }
-        if (monster.length == 0) {
+        for (int i = 0; i < bigMonster.length; i++) {
+            if (bigMonster[i].getBigMonsterX() == hero.getPlayerX() &&
+                    bigMonster[i].getBigMonsterY() == hero.getPlayerY())
+                return gameOver();
+        }
+
+        if (monster.length == 0 && bigMonster.length == 0) {
             console.clearScreen();
             console.println(field.viewBattleField());
             console.flush();
@@ -97,7 +122,6 @@ public class SimpleEngine {
             console.flush();
             return false;
         }
-
         return true;
     }
 
@@ -111,4 +135,27 @@ public class SimpleEngine {
         }
         monster = monsterNew;
     }
+
+    public void bigMonsterDied(int x) {
+        BigMonster[] bigMonsterNew = new BigMonster[bigMonster.length - 1];
+        for (int i = 0; i < x; i++) {
+            bigMonsterNew[i] = bigMonster[i];
+        }
+        for (int i = x + 1; i < bigMonster.length; i++) {
+            bigMonsterNew[i - 1] = bigMonster[i];
+        }
+        bigMonster = bigMonsterNew;
+    }
+
+    public boolean gameOver() throws IOException {
+        field.setNeedField(hero.getPlayerX(), hero.getPlayerY(), 'D');
+        console.clearScreen();
+        console.println(field.viewBattleField());
+        console.flush();
+        console.println("GAME OVER - monsters killed you");
+        console.flush();
+        return false;
+
+    }
 }
+
