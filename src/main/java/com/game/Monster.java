@@ -46,7 +46,7 @@ public class Monster {
             else b = y - random.nextInt(2);
         }
 
-        if (field.fieldChar(a, b) == ' ' || field.fieldChar(a, b) == 'X') {
+        if (field.fieldChar(a, b) == ' ' || field.fieldChar(a, b) == 'X'|| field.fieldChar(a, b) == 'T') {
             monsterX = a;
             monsterY = b;
             field.setNeedField(a, b, 'M');

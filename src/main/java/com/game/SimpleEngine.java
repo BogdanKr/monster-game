@@ -58,7 +58,7 @@ public class SimpleEngine {
             for (int i = 0; i < monster.length; i++) {
                 if (monster[i].getMonsterX() == pistol.getPistolX() && monster[i].getMonsterY() == pistol.getPistolY()) {
                     monsterDied(i);
-                    field.setNeedField(pistol.getPistolX(), pistol.getPistolY(), ' ');
+                    field.setNeedField(pistol.getPistolX(), pistol.getPistolY(), 'T');
                     shot = 0;
                     pistol.pistolHit(hero.getPlayerX(), hero.getPlayerY());
                 }
@@ -70,7 +70,7 @@ public class SimpleEngine {
 
             if (pistol.getPistolX() == 0) {
                 shot = 0;//если пуля долетела до конца поля, полет прекращается
-                field.setNeedField(pistol.getPistolX(),pistol.getPistolY(),' ');
+                field.setNeedField(pistol.getPistolX(), pistol.getPistolY(), ' ');
             }
         }
 
@@ -88,6 +88,14 @@ public class SimpleEngine {
                 console.flush();
                 return false;
             }
+        }
+        if (monster.length == 0) {
+            console.clearScreen();
+            console.println(field.viewBattleField());
+            console.flush();
+            console.println("Congratulations!!!!  YOU  WIN!!!!");
+            console.flush();
+            return false;
         }
 
         return true;
