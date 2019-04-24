@@ -10,6 +10,7 @@ public class SimpleEngine {
     private Monster[] monster;
     private ConsoleReader console;
     private Hero hero;
+    private Pistol pistol;
 
     public SimpleEngine(BattleField field, Monster[] monster, ConsoleReader console, Hero hero) {
         this.field = field;
@@ -22,8 +23,10 @@ public class SimpleEngine {
         for (int i = 0; i < monster.length; i++) {
             monster[i] = new Monster(field);
         }
-
-        field.viewBattleField();
+        pistol = new Pistol(hero,field);
+        console.clearScreen();
+        console.println(field.viewBattleField());
+        console.flush();
 
         while (checkAlive()) {
             KeyMap map = new KeyMap("");
@@ -31,15 +34,19 @@ public class SimpleEngine {
             map.bind("\u001B[B", "Down");
             map.bind("\u001B[C", "Right");
             map.bind("\u001B[D", "Left");
+            map.bind(" ", "Shot");
             Object action = console.readBinding(map);
             hero.playerAction(action);
+            if (action.equals("Shot")) pistol.shotPistol();
 
             //перемещае монстров
             for (int i = 0; i < monster.length; i++) {
                 monster[i].moveMonster();
             }
 
-            field.viewBattleField();
+            console.clearScreen();
+            console.println(field.viewBattleField());
+            console.flush();
         }
 
     }
@@ -49,7 +56,9 @@ public class SimpleEngine {
 
             if (monster[i].getMonsterX() == hero.getPlayerX() && monster[i].getMonsterY() == hero.getPlayerY()) {
                 field.setNeedField(hero.getPlayerX(), hero.getPlayerY(), 'D');
-                field.viewBattleField();
+                console.clearScreen();
+                console.println(field.viewBattleField());
+                console.flush();
                 console.println("GAME OVER - monsters killed you");
                 console.flush();
                 return false;
