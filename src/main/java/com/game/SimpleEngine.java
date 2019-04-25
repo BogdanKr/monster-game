@@ -168,7 +168,6 @@ public class SimpleEngine {
         if (action.equals("Right")) hero.moveRight();
         if (action.equals("Up")) hero.moveUp();
         if (action.equals("Down")) hero.moveDown();
-
     }
 }
 
