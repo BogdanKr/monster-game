@@ -16,9 +16,8 @@ public class Hero {
 
     public Hero(BattleField field) {
         this.field = field;
-        playerX = field.getFieldHeight() - 1;
-        playerY = field.getFieldWidth() / 2 - 1;
-        field.setNeedField(playerX, playerY, 'X');
+        playerY = field.getFieldWidth() / 2;
+        playerX = field.moveUp(field.getFieldHeight(),playerY,view);
     }
 
     public void moveLeft() {

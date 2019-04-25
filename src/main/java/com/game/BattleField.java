@@ -110,6 +110,9 @@ public class BattleField {
                 field[x][y] = '_';
                 x--;
                 field[x][y] = symbol;
+            } else if (x > field.length - 1) {
+                x = field.length - 1;
+                field[x][y] = symbol;
             } else {
                 field[x][y] = ' ';
                 x--;
