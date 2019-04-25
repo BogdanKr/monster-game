@@ -15,6 +15,13 @@ public class SimpleEngine {
     private Hero hero;
     private Pistol pistol;
 
+    private static final String HIDE_CURSOR = "\u001B[?25l";
+    private static final String KEY_UP = "\u001B[A";
+    private static final String KEY_DOWN = "\u001B[B";
+    private static final String KEY_LEFT = "\u001B[D";
+    private static final String KEY_RIGHT = "\u001B[C";
+    private static final String KEY_SHOT = " ";
+
     public SimpleEngine(BattleField field, Monster[] monster, Monster2[] monster2,
                         BigMonster[] bigMonster, ConsoleReader console, Hero hero) {
         this.field = field;
@@ -33,7 +40,7 @@ public class SimpleEngine {
             bigMonster[i] = new BigMonster(field);
         }
         for (int i = 0; i < monster2.length; i++) {
-            monster2[i]=new Monster2(field);
+            monster2[i] = new Monster2(field);
         }
         pistol = new Pistol(field);
         console.clearScreen();
@@ -41,14 +48,16 @@ public class SimpleEngine {
         console.flush();
         int shot = 0;
 
+        hideCursor(console);
+
         while (checkAlive()) {
-            KeyMap map = new KeyMap("");
-            map.bind("\u001B[A", "Up");
-            map.bind("\u001B[B", "Down");
-            map.bind("\u001B[C", "Right");
-            map.bind("\u001B[D", "Left");
-            map.bind(" ", "Shot");
-            Object action = console.readBinding(map);
+//            KeyMap map = new KeyMap("");
+//            map.bind("\u001B[A", "Up");
+//            map.bind("\u001B[B", "Down");
+//            map.bind("\u001B[C", "Right");
+//            map.bind("\u001B[D", "Left");
+//            map.bind(" ", "Shot");
+            Object action = readKeyboard(console);
             playerAction(action);
 
             //перемещае монстров
@@ -62,7 +71,7 @@ public class SimpleEngine {
             if (shot > 0) pistol.shooting();//полет пули если был выстрел
 
             //новый выстрел если небыло предыдущего
-            if (action.equals("Shot")) {
+            if (action.equals(Action.Shot)) {
                 if (shot == 0) {
                     pistol.shotPistol(hero.getPlayerX(), hero.getPlayerY());
                     shot++;
@@ -163,11 +172,26 @@ public class SimpleEngine {
         return false;
     }
 
-    public void playerAction(Object action){
-        if (action.equals("Left")) hero.moveLeft();
-        if (action.equals("Right")) hero.moveRight();
-        if (action.equals("Up")) hero.moveUp();
-        if (action.equals("Down")) hero.moveDown();
+    public void playerAction(Object action) {
+        if (action.equals(Action.Left)) hero.moveLeft();
+        if (action.equals(Action.Right)) hero.moveRight();
+        if (action.equals(Action.Up)) hero.moveUp();
+        if (action.equals(Action.Down)) hero.moveDown();
+    }
+
+    private static Action readKeyboard(ConsoleReader console) throws IOException {
+        KeyMap map = new KeyMap("");
+        map.bind(KEY_UP, Action.Up);
+        map.bind(KEY_DOWN, Action.Down);
+        map.bind(KEY_LEFT, Action.Left);
+        map.bind(KEY_RIGHT, Action.Right);
+        map.bind(KEY_SHOT, Action.Shot);
+        return (Action) console.readBinding(map);
+    }
+
+    private static void hideCursor(ConsoleReader console) throws IOException {
+        console.print(HIDE_CURSOR);
+        console.flush();
     }
 }
 
