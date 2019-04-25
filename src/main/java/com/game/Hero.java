@@ -21,14 +21,6 @@ public class Hero {
         field.setNeedField(playerX, playerY, 'X');
     }
 
-    public void playerAction(Object action) {
-        if (action.equals("Left")) moveLeft();
-        if (action.equals("Right")) moveRight();
-        if (action.equals("Up")) moveUp();
-        if (action.equals("Down")) moveDown();
-
-    }
-
     public void moveLeft() {
         playerY = field.moveLeft(playerX, playerY, view);
     }

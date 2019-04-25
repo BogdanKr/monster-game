@@ -49,7 +49,7 @@ public class SimpleEngine {
             map.bind("\u001B[D", "Left");
             map.bind(" ", "Shot");
             Object action = console.readBinding(map);
-            hero.playerAction(action);
+            playerAction(action);
 
             //перемещае монстров
             for (int i = 0; i < monster.length; i++) {
@@ -161,6 +161,13 @@ public class SimpleEngine {
         console.println("GAME OVER - monsters killed you");
         console.flush();
         return false;
+    }
+
+    public void playerAction(Object action){
+        if (action.equals("Left")) hero.moveLeft();
+        if (action.equals("Right")) hero.moveRight();
+        if (action.equals("Up")) hero.moveUp();
+        if (action.equals("Down")) hero.moveDown();
 
     }
 }
