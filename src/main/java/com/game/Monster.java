@@ -6,6 +6,7 @@ public class Monster {
     private BattleField field;
     int monsterX;
     int monsterY;
+    char view = 'M';
 
 
     Monster(BattleField field) {
@@ -13,7 +14,7 @@ public class Monster {
         this.field = field;
         monsterX = random.nextInt(3);
         monsterY = random.nextInt(field.getFieldWidth());
-        field.setNeedField(monsterX, monsterY, 'M');
+        field.setNeedField(monsterX, monsterY, view);
     }
 
     public int getMonsterX() {
@@ -34,24 +35,17 @@ public class Monster {
 
         int a = x, b = y, c;
         c = random.nextInt(10);
-        if (c % 2 == 0) {
-            if (x > 0 && x < field.getFieldHeight() - 1)
-                a = x + random.nextInt(3) - 1;
-            else if (x == 0) a = x + random.nextInt(2);
-            else a = x - random.nextInt(2);
-        } else {
-            if (y > 0 && y < field.getFieldWidth() - 1)
-                b = y + random.nextInt(3) - 1;
-            else if (y == 0) b = y + random.nextInt(2);
-            else b = y - random.nextInt(2);
-        }
+        if (c % 2 == 0)
+            a = field.moveRandomUpDown(monsterX);
+         else
+            b = field.moveRandomLeftRight(monsterY);
 
-        if (field.fieldChar(a, b) == ' ' || field.fieldChar(a, b) == 'X'|| field.fieldChar(a, b) == 'T') {
+        if (field.fieldChar(a, b) == ' ' || field.fieldChar(a, b) == 'X' || field.fieldChar(a, b) == 'T') {
             monsterX = a;
             monsterY = b;
-            field.setNeedField(a, b, 'M');
+            field.setNeedField(a, b, view);
         } else {
-            field.setNeedField(x, y, 'M');
+            field.setNeedField(x, y, view);
         }
 
     }

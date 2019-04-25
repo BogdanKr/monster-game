@@ -1,6 +1,8 @@
 package com.game;
 
 
+import java.util.Random;
+
 public class BattleField {
     private char[][] field;
 
@@ -45,5 +47,75 @@ public class BattleField {
         return field[x][y];
     }
 
+    public int moveRandomLeftRight(int x) {
+        Random random = new Random();
+        if (x > 0 && x < field[0].length - 1)
+            x = x + random.nextInt(3) - 1;
+        else if (x == 0) x = x + random.nextInt(2);
+        else x = x - random.nextInt(2);
+        return x;
+    }
 
+    public int moveRandomUpDown(int x) {
+        Random random = new Random();
+        if (x > 0 && x < field.length - 1)
+            x = x + random.nextInt(3) - 1;
+        else if (x == 0) x = x + random.nextInt(2);
+        else x = x - random.nextInt(2);
+        return x;
+    }
+
+    public int moveRight(int x, int y, char symbol) {
+        if (y < field[0].length - 1) {
+            if (x == field.length - 1) {
+                field[x][y] = '_';
+                y++;
+                field[x][y] = symbol;
+            } else {
+                field[x][y] = ' ';
+                y++;
+                field[x][y] = symbol;
+            }
+        }
+        return y;
+    }
+
+    public int moveLeft(int x, int y, char symbol) {
+        if (y > 0) {
+            if (x == field.length - 1) {
+                field[x][y] = '_';
+                y--;
+                field[x][y] = symbol;
+            } else {
+                field[x][y] = ' ';
+                y--;
+                field[x][y] = symbol;
+            }
+        }
+        return y;
+    }
+
+    public int moveDown(int x, int y, char symbol) {
+        if (x < field.length - 1) {
+            field[x][y] = ' ';
+            x++;
+            field[x][y] = symbol;
+        }
+        return x;
+    }
+
+    public int moveUp(int x, int y, char symbol) {
+        if (x > 0) {
+            if (x == field.length - 1) {
+                field[x][y] = '_';
+                x--;
+                field[x][y] = symbol;
+            } else {
+                field[x][y] = ' ';
+                x--;
+                field[x][y] = symbol;
+            }
+        }
+        return x;
+    }
 }

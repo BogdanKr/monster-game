@@ -4,6 +4,7 @@ public class Hero {
     private BattleField field;
     private int playerX;
     private int playerY;
+    private char view = 'X';
 
     public int getPlayerX() {
         return playerX;
@@ -26,49 +27,21 @@ public class Hero {
         if (action.equals("Up")) moveUp();
         if (action.equals("Down")) moveDown();
 
-        field.setNeedField(playerX, playerY, 'X');
     }
 
     public void moveLeft() {
-        if (playerY > 0) {
-            if (playerX == field.getFieldHeight() - 1) {
-                playerY--;
-                field.setNeedField(playerX, playerY + 1, '_');
-            } else {
-                playerY--;
-                field.setNeedField(playerX, playerY + 1, ' ');
-            }
-        }
+        playerY = field.moveLeft(playerX, playerY, view);
     }
 
     public void moveRight() {
-        if (playerY < field.getFieldWidth() - 1) {
-            if (playerX == field.getFieldHeight() - 1) {
-                playerY++;
-                field.setNeedField(playerX, playerY - 1, '_');
-            } else {
-                playerY++;
-                field.setNeedField(playerX, playerY - 1, ' ');
-            }
-        }
+        playerY = field.moveRight(playerX, playerY, view);
     }
 
     public void moveDown() {
-        if (playerX < field.getFieldHeight() - 1) {
-            playerX++;
-            field.setNeedField(playerX - 1, playerY, ' ');
-        }
+        playerX = field.moveDown(playerX, playerY, view);
     }
 
     public void moveUp() {
-        if (playerX > 0) {
-            if (playerX == field.getFieldHeight() - 1) {
-                playerX--;
-                field.setNeedField(playerX + 1, playerY, '_');
-            } else {
-                playerX--;
-                field.setNeedField(playerX + 1, playerY, ' ');
-            }
-        }
+        playerX = field.moveUp(playerX, playerY, view);
     }
 }

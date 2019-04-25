@@ -6,16 +6,20 @@ import jline.console.KeyMap;
 import java.io.IOException;
 
 public class SimpleEngine {
-    private BattleField field;
+    private final BattleField field;
     private Monster[] monster;
+    private Monster2[] monster2;
+
     private BigMonster[] bigMonster;
     private ConsoleReader console;
     private Hero hero;
     private Pistol pistol;
 
-    public SimpleEngine(BattleField field, Monster[] monster, BigMonster[] bigMonster, ConsoleReader console, Hero hero) {
+    public SimpleEngine(BattleField field, Monster[] monster, Monster2[] monster2,
+                        BigMonster[] bigMonster, ConsoleReader console, Hero hero) {
         this.field = field;
         this.monster = monster;
+        this.monster2 = monster2;
         this.bigMonster = bigMonster;
         this.console = console;
         this.hero = hero;
@@ -27,6 +31,9 @@ public class SimpleEngine {
         }
         for (int i = 0; i < bigMonster.length; i++) {
             bigMonster[i] = new BigMonster(field);
+        }
+        for (int i = 0; i < monster2.length; i++) {
+            monster2[i]=new Monster2(field);
         }
         pistol = new Pistol(field);
         console.clearScreen();
@@ -89,7 +96,6 @@ public class SimpleEngine {
                     }
                 }
             }
-
             console.clearScreen();
             console.println(field.viewBattleField());
             console.flush();
