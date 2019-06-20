@@ -51,12 +51,7 @@ public class SimpleEngine {
         hideCursor(console);
 
         while (checkAlive()) {
-//            KeyMap map = new KeyMap("");
-//            map.bind("\u001B[A", "Up");
-//            map.bind("\u001B[B", "Down");
-//            map.bind("\u001B[C", "Right");
-//            map.bind("\u001B[D", "Left");
-//            map.bind(" ", "Shot");
+
             Object action = readKeyboard(console);
             playerAction(action);
 

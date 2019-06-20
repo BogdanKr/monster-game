@@ -12,7 +12,7 @@ public class Main {
         console.clearScreen();
 
         // создаю поле 13 / 6 и заполняю его пробелами, снизу поле подчеркнуто и по центру герой
-        BattleField field = new BattleField(13, 6);
+        BattleField field = new BattleField(13, 7);
         Monster[] monster = new Monster[10]; //создаю монстров и их количество
         BigMonster[] bigMonster = new BigMonster[10];//создаю сильных монстров, умирают после двух попаданий
         Monster2 [] monster2 = new Monster2[5];
