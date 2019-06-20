@@ -17,5 +17,9 @@ public class BattleFieldTest {
 
         assertEquals(2,battleField.moveRight(1,1,'X'));
         assertEquals(2,battleField.moveLeft(1,3,'X'));
+        assertEquals(0,battleField.moveUp(1,3,'X'));
+        assertEquals(0,battleField.moveUp(0,3,'X'));
+        assertEquals(2,battleField.moveDown(1,3,'X'));
+
     }
 }
